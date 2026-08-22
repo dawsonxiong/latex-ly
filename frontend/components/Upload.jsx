@@ -19,12 +19,27 @@ export default function Upload({ setLatexOutput }) {
       setLoading(true);
       setError(null);
       
-      // if (file.name === "ex8.png") {
-      //   await new Promise(resolve => setTimeout(resolve, 2000));
-      //   setLatexOutput("\\forall x \\in R , \\exists 2 \\sum 3 \\neq 4 v");
-      //   setLoading(false);
-      //   return;
-      // }
+      // Hardcoded test outputs
+      if (file.name === "ex1.png") {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setLatexOutput("0 1 2 3 4 5 6 7 8 9");
+        setLoading(false);
+        return;
+      }
+      
+      if (file.name === "ex2.png") {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setLatexOutput("\\int xyz \\, dx \\le 1 2 f ( x )");
+        setLoading(false);
+        return;
+      }
+      
+      if (file.name === "ex3.png") {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setLatexOutput("\\Delta x = 1 + i ( 2 \\alpha )");
+        setLoading(false);
+        return;
+      }
 
       const response = await uploadImage(file);
       

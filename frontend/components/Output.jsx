@@ -18,7 +18,7 @@ export default function Output({ latex }) {
   return (
     <div className="bg-white p-8 mt-8 rounded-2xl shadow-xl w-full max-w-2xl border border-gray-100 animate-fadeIn">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-3xl font-bold font-figtree text-gray-900">
+        <h2 className="text-2xl font-bold font-figtree text-gray-900">
           Generated LaTeX
         </h2>
         <button
@@ -42,10 +42,33 @@ export default function Output({ latex }) {
           )}
         </button>
       </div>
-      <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-xl border border-gray-200">
+      
+      {/* LaTeX Code */}
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-xl border border-gray-200 mb-6">
         <pre className="text-gray-800 font-mono text-sm overflow-x-auto whitespace-pre-wrap break-words">
           {latex}
         </pre>
+      </div>
+
+      {/* Rendered Preview */}
+      <div className="border-t border-gray-200 pt-6">
+        <h2 className="text-2xl font-bold font-figtree text-gray-900 mb-4">
+          Rendered Preview
+        </h2>
+        <div className="bg-white p-8 rounded-xl border-2 border-blue-100 flex items-center justify-center min-h-[100px]">
+          <img 
+            src={`https://latex.codecogs.com/png.latex?\\dpi{150}\\bg_white ${encodeURIComponent(latex)}`}
+            alt="Rendered LaTeX"
+            className="max-w-full"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'block';
+            }}
+          />
+          <div className="text-gray-500 text-sm hidden">
+            Unable to render preview
+          </div>
+        </div>
       </div>
     </div>
   );
