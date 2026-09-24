@@ -1,16 +1,16 @@
 # LaTeX.ly
 
-Turns a photo of a handwritten or printed equation into LaTeX.
+Take a photo of a math equation, handwritten or printed, and get the LaTeX for it.
 
 ![LaTeX.ly with an uploaded equation image, the generated LaTeX and a rendered preview](docs/screenshots/result.webp)
 
 ## Features
 
-- Upload a photo of an equation and get LaTeX back, with a rendered preview.
-- Reads both handwriting and print.
-- Symbol recognition from a CNN trained from scratch on 49k+ images of math symbols.
-- Conversion history: your last 30 conversions stay in the browser with a thumbnail, ready to reopen, copy or delete.
-- A Flask REST API behind a Next.js front end.
+- Upload an image of an equation and get LaTeX back with a rendered preview
+- Works on handwriting and printed math
+- The symbol classifier is a CNN I trained from scratch on 49k+ images
+- Conversion history, with your last 30 conversions saved in the browser so you can reopen, copy or delete them
+- Flask REST API with a Next.js front end
 
 ## Screenshots
 
@@ -20,9 +20,11 @@ Turns a photo of a handwritten or printed equation into LaTeX.
 
 ## How it works
 
-- OpenCV cleans the image, finds each symbol's contour and re-merges split glyphs like = and i.
-- Each crop is normalised to 64×64 and classified by a PyTorch CNN, then assembled into LaTeX left to right.
-- Five model versions trained on 49k+ symbol images: 24k generated across 25 fonts, 25k handwritten from CROHME.
+1. OpenCV cleans up the image and finds the contour around each symbol. Symbols that split into pieces, like = and i, get merged back together.
+2. Each symbol is cropped, resized to 64×64 and classified by the PyTorch CNN.
+3. The predictions are read left to right and put together into a LaTeX string.
+
+I trained five versions of the model on 49k+ symbol images, 24k that I generated across 25 fonts and 25k handwritten ones from CROHME.
 
 ## Stack
 
@@ -30,15 +32,15 @@ Python, PyTorch, OpenCV, NumPy, Flask, Next.js, React, Tailwind, Docker.
 
 ## Running locally
 
-The quickest way is Docker, which runs the API on port 5000 and the app on [localhost:3000](http://localhost:3000):
+The easiest way is Docker. This starts the API on port 5000 and the app on [localhost:3000](http://localhost:3000):
 
 ```sh
 docker compose up --build
 ```
 
-`API_PORT` and `WEB_PORT` change the ports, for example `API_PORT=5001 docker compose up --build` if macOS AirPlay Receiver is holding port 5000. Keep `--build` after changing `API_PORT`, because the API URL is compiled into the front end.
+If port 5000 is taken (on a Mac it's usually AirPlay Receiver), use `API_PORT=5001 docker compose up --build`. `WEB_PORT` changes the app's port the same way. Keep `--build` when you change `API_PORT`, since the API URL gets baked into the front end.
 
-Without Docker, you need Python 3.9 or newer and Node 18.18 or newer. Start the API on port 5000:
+To run it without Docker you'll need Python 3.9+ and Node 18.18+. Start the API (port 5000):
 
 ```sh
 cd backend
@@ -46,7 +48,7 @@ pip install -r requirements.txt
 python read.py
 ```
 
-And the front end:
+Then the front end:
 
 ```sh
 cd frontend
@@ -54,7 +56,7 @@ npm install
 npm run dev
 ```
 
-To train the model, also `pip install -r requirements_train.txt` and open `backend/train.ipynb`.
+If you want to train the model yourself, also install `requirements_train.txt` and open `backend/train.ipynb`.
 
 ## What I learned
 
