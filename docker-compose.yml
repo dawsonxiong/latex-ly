@@ -1,0 +1,21 @@
+# The browser calls the API directly, so both ports are published on localhost.
+# API_PORT / WEB_PORT change the host ports (e.g. API_PORT=5001 when macOS AirPlay
+# Receiver holds 5000); rebuild with --build after changing API_PORT, since the
+# API URL is baked into the frontend bundle.
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "${API_PORT:-5000}:5000"
+    environment:
+      CORS_ORIGINS: http://localhost:${WEB_PORT:-3000}
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:${API_PORT:-5000}
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    depends_on:
+      - backend

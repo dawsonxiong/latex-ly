@@ -4,20 +4,33 @@ import Image from 'next/image';
 import { useState } from "react";
 import Upload from "/components/Upload";
 import Output from "/components/Output";
+import History from "/components/History";
+import { useHistory } from "/lib/history";
 
 export default function Home() {
   const [latexOutput, setLatexOutput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { entries, addEntry, removeEntry, clearEntries } = useHistory();
 
-  const handleLatexOutput = async (output) => {
+  const handleLatexOutput = async (output, file) => {
     try {
       setLatexOutput(output);
       setError(null);
+      if (output?.trim()) await addEntry(output, file);
     } catch (err) {
       setError(err.message);
       console.error('Error handling LaTeX output:', err);
     }
+  };
+
+  // Bring a past conversion back into the output view
+  const handleSelectHistory = (entry) => {
+    setLatexOutput(entry.latex);
+    setError(null);
+    setTimeout(() => {
+      document.getElementById("latex-output")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 0);
   };
 
   return (
@@ -43,7 +56,19 @@ export default function Home() {
       )}
       
       {/* Output Display */}
-      {latexOutput && <Output latex={latexOutput} />}
+      {latexOutput && (
+        <div id="latex-output" className="w-full max-w-2xl scroll-mt-16">
+          <Output key={latexOutput} latex={latexOutput} />
+        </div>
+      )}
+
+      {/* Conversion History */}
+      <History
+        entries={entries}
+        onSelect={handleSelectHistory}
+        onDelete={removeEntry}
+        onClear={clearEntries}
+      />
 
       {/* How It Works Section */}
       <div className="mt-48 mb-12 w-full max-w-7xl px-4">

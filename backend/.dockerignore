@@ -1,0 +1,8 @@
+# The image only needs the API code, requirements and the model predict.py loads.
+# Everything else (other models, datasets, notebooks, test images, venvs) stays out.
+*
+!requirements.txt
+!read.py
+!process.py
+!predict.py
+!models/LaTeXly_v5.pth

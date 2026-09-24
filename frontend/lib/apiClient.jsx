@@ -1,9 +1,11 @@
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+
 export async function uploadImage(file) {
   try {
     const formData = new FormData();
     formData.append('image', file);
 
-    const response = await fetch('http://localhost:5000/api/process-latex', {
+    const response = await fetch(`${API_URL}/api/process-latex`, {
       method: 'POST',
       body: formData,
     });

@@ -11,7 +11,7 @@ filename = r'ex6.png' # test image path
 app = Flask(__name__)
 CORS(app, resources={
     r"/api/*": {
-        "origins": ["http://localhost:3000"],
+        "origins": os.environ.get('CORS_ORIGINS', 'http://localhost:3000').split(','),
         "methods": ["POST", "OPTIONS"],
         "allow_headers": ["Content-Type"]
     }
@@ -106,4 +106,7 @@ def process_latex():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # Defaults match local dev; the Docker image sets FLASK_RUN_HOST=0.0.0.0 and FLASK_DEBUG=0
+    app.run(debug=os.environ.get('FLASK_DEBUG', '1').lower() not in ('0', 'false', 'no'),
+            host=os.environ.get('FLASK_RUN_HOST', '127.0.0.1'),
+            port=5000)

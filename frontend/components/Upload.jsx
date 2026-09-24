@@ -22,21 +22,21 @@ export default function Upload({ setLatexOutput }) {
       // Hardcoded test outputs
       if (file.name === "ex1.png") {
         await new Promise(resolve => setTimeout(resolve, 1000));
-        setLatexOutput("0 1 2 3 4 5 6 7 8 9");
+        setLatexOutput("0 1 2 3 4 5 6 7 8 9", file);
         setLoading(false);
         return;
       }
       
       if (file.name === "ex2.png") {
         await new Promise(resolve => setTimeout(resolve, 1000));
-        setLatexOutput("\\int xyz \\, dx \\le 1 2 f ( x )");
+        setLatexOutput("\\int xyz \\, dx \\le 1 2 f ( x )", file);
         setLoading(false);
         return;
       }
       
       if (file.name === "ex3.png") {
         await new Promise(resolve => setTimeout(resolve, 1000));
-        setLatexOutput("\\Delta x = 1 + i ( 2 \\alpha )");
+        setLatexOutput("\\Delta x = 1 + i ( 2 \\alpha )", file);
         setLoading(false);
         return;
       }
@@ -47,7 +47,7 @@ export default function Upload({ setLatexOutput }) {
         throw new Error(response.error);
       }
       
-      setLatexOutput(response.latex_output);
+      setLatexOutput(response.latex_output, file);
     } catch (err) {
       setError(err.message || "Error processing image");
       console.error("Upload error:", err);

@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+build
+coverage
+.vercel
+.git
+.env*
+npm-debug.log*
+.DS_Store
+Dockerfile
+.dockerignore
